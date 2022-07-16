@@ -24,9 +24,9 @@ function Copyright() {
   return (
     <Typography variant="body2" color="text.secondary" align="center">
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
+      {/* <Link color="inherit" href="https://mui.com/">
         Your Website
-      </Link>{' '}
+      </Link>{' '} */}
       {new Date().getFullYear()}
       {'.'}
     </Typography>
@@ -36,7 +36,26 @@ function Copyright() {
 const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 
-const theme = createTheme();
+const theme = createTheme({spacing: 2, 
+   palette: {
+  mode: 'dark',
+},
+typography: {
+  fontFamily: [
+    '-apple-system',
+    'BlinkMacSystemFont',
+    '"Segoe UI"',
+    'Roboto',
+    '"Helvetica Neue"',
+    'Arial',
+    'sans-serif',
+    '"Apple Color Emoji"',
+    '"Segoe UI Emoji"',
+    '"Segoe UI Symbol"',
+  ].join(','),
+},
+});
+
 
 export default function Album() {
   return (
@@ -46,7 +65,7 @@ export default function Album() {
         <Toolbar>
           <CameraIcon sx={{ mr: 2 }} />
           <Typography variant="h6" color="inherit" noWrap>
-            Album layout
+          Anime Girl Holding Programming Book
           </Typography>
         </Toolbar>
       </AppBar>
@@ -67,12 +86,10 @@ export default function Album() {
               color="text.primary"
               gutterBottom
             >
-              Album layout
+              相册
             </Typography>
             <Typography variant="h5" align="center" color="text.secondary" paragraph>
-              Something short and leading about the collection below—its contents,
-              the creator, etc. Make it short and sweet, but not too short so folks
-              don&apos;t simply skip over it entirely.
+              动漫女孩看程序员的书
             </Typography>
             <Stack
               sx={{ pt: 4 }}
@@ -80,14 +97,14 @@ export default function Album() {
               spacing={2}
               justifyContent="center"
             >
-              <Button variant="contained">Main call to action</Button>
-              <Button variant="outlined">Secondary action</Button>
+              <Button variant="contained">拨号</Button>
+              <Button variant="outlined">挂断</Button>
             </Stack>
           </Container>
         </Box>
         <Container sx={{ py: 8 }} maxWidth="md">
           {/* End hero unit */}
-          <Grid container spacing={4}>
+          <Grid container spacing={2}>
             {itemData.map((item) => (
               <Grid item key={item} xs={12} sm={6} md={4}>
                 <Card
@@ -96,14 +113,15 @@ export default function Album() {
                   <CardMedia
                     component="img"
                     sx={{
+                      height: '100%', display: 'flex', flexDirection: 'row'
                       // 16:9
-                      pt: '56.25%',
+                      // pt: '56.25%',
                     }}
                     image={item.img}
                     alt={item.title}
                   />
                   <CardContent sx={{ flexGrow: 1 }}>
-                    <Typography gutterBottom variant="h5" component="h2">
+                    <Typography gutterBottom variant="h6" component="h5">
                     {item.context.custom.caption}
                     </Typography>
                     <Typography>
