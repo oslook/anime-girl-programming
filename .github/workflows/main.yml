@@ -34,12 +34,12 @@ jobs:
       - run: |
           pip install -r tools/requirements.txt
           mv tools/image.py ./image.py
-    - name: Cache update time
-      id: cache-updated
-      uses: actions/cache@v3
-      with:
-        path: |
-          ~/updatedAt
+      - name: Cache update time
+        id: cache-updated
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/updatedAt
       - if: ${{ steps.cache-updated.outputs.cache-hit == 'false' }}
         name: Checkout tools repo w/o cache
         uses: actions/checkout@v2
