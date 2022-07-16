@@ -54,7 +54,7 @@ jobs:
           export CLOUDINARY_URL=${{ secrets.CLOUDINARY_URL }}
           mv ../image.py ./image.py
           UPDATE=`curl https://api.github.com/repositories/90916769 | jq .updated_at`
-          echo $UPDATE > ../updatedAt
+          echo $UPDATE > ~/updatedAt
           python image.py upload
           cd ..
       - if: ${{ steps.cache-updated.outputs.cache-hit == 'true' }}
