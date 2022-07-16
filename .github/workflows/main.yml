@@ -65,7 +65,7 @@ jobs:
           export CLOUDINARY_URL=${{ secrets.CLOUDINARY_URL }}
           mv ../image.py ./image.py
           UPDATE=`curl https://api.github.com/repositories/90916769 | jq .updated_at`
-          UPDATECACHE=`cat ../updatedAt`
+          UPDATECACHE=`cat ~/updatedAt`
           echo $UPDATE $UPDATECACHE
           if [ "$UPDATE" = "$UPDATECACHE" ]; then
           echo "Strings are equal."
@@ -73,8 +73,8 @@ jobs:
           else
             echo "Strings are not equal."
             python image.py upload
+            echo $UPDATE > ~/updatedAt
           fi
-          echo $UPDATE > ../updatedAt
           cd ..
       # - name: Use Node.js
       #   uses: actions/setup-node@v2
