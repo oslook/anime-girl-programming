@@ -37,8 +37,8 @@ jobs:
       - name: Cache update time
         id: cache-updated
         uses: actions/cache@v3
-        key: npm-${{ hashFiles('package-lock.json') }}
         with:
+          key: npm-${{ hashFiles('package-lock.json') }}
           path: |
             ~/updatedAt
       - if: ${{ steps.cache-updated.outputs.cache-hit == 'false' }}
