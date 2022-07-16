@@ -16,6 +16,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
+import Pagination from '@mui/material/Pagination';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import itemData from './itemData';
 
@@ -139,6 +140,7 @@ export default function Album() {
               </Grid>
             ))}
           </Grid>
+          <Pagination count={10} />
         </Container>
       </main>
       {/* Footer */}

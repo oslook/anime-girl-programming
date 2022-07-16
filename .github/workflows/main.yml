@@ -41,13 +41,13 @@ jobs:
           key: npm-${{ hashFiles('package-lock.json') }}
           path: |
             ~/updatedAt
-      - if: ${{ steps.cache-updated.outputs.cache-hit == 'false' }}
         name: Checkout tools repo w/o cache
         uses: actions/checkout@v2
         with:
           repository: laynH/Anime-Girls-Holding-Programming-Books
           path: tools
-      - run: |
+      - if: ${{ steps.cache-updated.outputs.cache-hit == 'false' }}
+        run: |
           cd tools
           echo ${{ secrets.CLOUDINARY_URL }}
           export CLOUDINARY_URL=${{ secrets.CLOUDINARY_URL }}
@@ -57,12 +57,7 @@ jobs:
           python image.py upload
           cd ..
       - if: ${{ steps.cache-updated.outputs.cache-hit == 'true' }}
-        name: Checkout tools repo with cache
-        uses: actions/checkout@v2
-        with:
-          repository: laynH/Anime-Girls-Holding-Programming-Books
-          path: tools
-      - run: |
+        run: |
           cd tools
           echo ${{ secrets.CLOUDINARY_URL }}
           export CLOUDINARY_URL=${{ secrets.CLOUDINARY_URL }}
