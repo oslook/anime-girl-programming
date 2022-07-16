@@ -41,12 +41,13 @@ jobs:
           key: npm-${{ hashFiles('package-lock.json') }}
           path: |
             ~/updatedAt
-      - name: Checkout tools repo w/o cache
+      - name: Checkout tools repo
         uses: actions/checkout@v2
         with:
           repository: laynH/Anime-Girls-Holding-Programming-Books
           path: tools
-      - if: ${{ steps.cache-updated.outputs.cache-hit == 'false' }}
+      - if: ${{ steps.cache-updated.outputs.cache-hit != 'true' }}
+        name: image w/o cache
         run: |
           cd tools
           echo ${{ secrets.CLOUDINARY_URL }}
@@ -57,6 +58,7 @@ jobs:
           python image.py upload
           cd ..
       - if: ${{ steps.cache-updated.outputs.cache-hit == 'true' }}
+        name: image w/ cache
         run: |
           cd tools
           echo ${{ secrets.CLOUDINARY_URL }}
@@ -64,6 +66,7 @@ jobs:
           mv ../image.py ./image.py
           UPDATE=`curl https://api.github.com/repositories/90916769 | jq .updated_at`
           UPDATECACHE=`cat ../updatedAt`
+          echo $UPDATE $UPDATECACHE
           if [ "$UPDATE" = "$UPDATECACHE" ]; then
           echo "Strings are equal."
           exit 0
@@ -73,7 +76,7 @@ jobs:
           fi
           echo $UPDATE > ../updatedAt
           cd ..
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js
         uses: actions/setup-node@v2
         with:
           node-version: 14.x
