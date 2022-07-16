@@ -76,11 +76,11 @@ jobs:
           fi
           echo $UPDATE > ../updatedAt
           cd ..
-      - name: Use Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: 14.x
-      - run: npm install
+      # - name: Use Node.js
+      #   uses: actions/setup-node@v2
+      #   with:
+      #     node-version: 14.x
+      # - run: npm install
       - name: Commit and push if changed
         run: |
           git status
@@ -96,5 +96,4 @@ jobs:
           else
             echo 'clean'
           fi
-#       - run: npm start
 
