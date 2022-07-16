@@ -12,6 +12,9 @@ on:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+  schedule:
+    # https://crontab.guru
+    - cron: 0 18 * * 0
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -31,18 +34,49 @@ jobs:
       - run: |
           pip install -r tools/requirements.txt
           mv tools/image.py ./image.py
-      - name: Checkout tools repo
+    - name: Cache update time
+      id: cache-updated
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/updatedAt
+      - if: ${{ steps.cache-updated.outputs.cache-hit == 'false' }}
+        name: Checkout tools repo w/o cache
         uses: actions/checkout@v2
         with:
           repository: laynH/Anime-Girls-Holding-Programming-Books
           path: tools
       - run: |
-           cd tools
-           echo ${{ secrets.CLOUDINARY_URL }}
-           export CLOUDINARY_URL=${{ secrets.CLOUDINARY_URL }}
-           mv ../image.py ./image.py
-           python image.py upload
-           cd ..
+          cd tools
+          echo ${{ secrets.CLOUDINARY_URL }}
+          export CLOUDINARY_URL=${{ secrets.CLOUDINARY_URL }}
+          mv ../image.py ./image.py
+          UPDATE=`curl https://api.github.com/repositories/90916769 | jq .updated_at`
+          echo $UPDATE > ../updatedAt
+          python image.py upload
+          cd ..
+      - if: ${{ steps.cache-updated.outputs.cache-hit == 'true' }}
+        name: Checkout tools repo with cache
+        uses: actions/checkout@v2
+        with:
+          repository: laynH/Anime-Girls-Holding-Programming-Books
+          path: tools
+      - run: |
+          cd tools
+          echo ${{ secrets.CLOUDINARY_URL }}
+          export CLOUDINARY_URL=${{ secrets.CLOUDINARY_URL }}
+          mv ../image.py ./image.py
+          UPDATE=`curl https://api.github.com/repositories/90916769 | jq .updated_at`
+          UPDATECACHE=`cat ../updatedAt`
+          if [ "$UPDATE" = "$UPDATECACHE" ]; then
+          echo "Strings are equal."
+          exit 0
+          else
+            echo "Strings are not equal."
+            python image.py upload
+          fi
+          echo $UPDATE > ../updatedAt
+          cd ..
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
         with:
