@@ -112,7 +112,7 @@ export default function Album() {
                   </CardContent>
                   <CardActions>
                     <IconButton aria-label={`star ${item.title}`} href={item.context.custom.original_url}>
-                      <StarBorderIcon className={classes.title} />
+                      <StarBorderIcon />
                     </IconButton>
                     <Button size="small">View</Button>
                     <Button size="small">Edit</Button>
